@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<head>
+    <title>Shop</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<style type="text/css">
+*{
+    background:green;
+}
+html, body {
+            margin: 0;
+            padding: 0;
+            color: white;
+            background-color: black;
+        }
+        
+#container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 25px;
+        }
+.ti {
+            padding-top: 30px;
+            text-align: center;
+        }
+.articles {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 10px;
+        }
+
+        .cart {
+            width: 300px;
+            margin: 10px;
+            margin-left: 10px;
+        }
+
+        .articles > div {
+            width: 200px;
+            margin: 20px;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .prod {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .tit {
+            width: 100px;
+            padding-left: 20px;
+        }
+
+        #price1, #price2, #price3, #price4 {
+            margin-right: 5px;
+        }
+
+        .inputs, input, select {
+            text-align: center;
+            border-radius: 10px;
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+
+        input {
+            width: 50px;
+        }
+
+        .addTo {
+            position: relative;
+            left: 0px;
+            width: 100px;
+            height: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            background-image: linear-gradient(to right, #ff512f, #dd2476);
+            color: beige;
+            border-width: 0px;
+        }
+        
+        .addTo:hover {
+            background-image: none;
+            background-color: red;
+            box-shadow: 0 0 20px red, 0 0 60px red, 0 0 60px red;
+        }
+
+        li {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        #message1, #message2, #message3, #message4 {
+            color: greenyellow;
+            text-align: center;
+        }
+
+        button {
+            position: absolute;
+            right: 20px;
+            border-radius: 50%;
+            color: aliceblue;
+            background-color: #ff512f;
+            border-width: 0px;
+        }
+
+        button:hover {
+            background-color: #d476;
+        }
+    </style>
+<body>
+    <h2 class="ti">Pizza in</h2>
+    <div class="container">
+        <div class="articles">
+            <div>
+            	<!-- uncomment to put your images -->
+              <img src="images/pizza.jpg">
+              <div class="prod">
+                    <h3 class="tit" id="brand1">pizza</h3>
+                    <h4 id="price1">9</h4>
+
+
+                                  </div>
+                <div class="inputs">
+                    <input type="number" id="quantity1" name="quantity1" min="1" max="99" value="1">
+                    <select id="size1" name="size1" onclick="deleteE('message1')">
+                        <option value="Medium">M</option>
+                        <option value="Large">L</option>
+                    </select>
+                    <div>
+                        <button class="addTo" onclick="add(1)">Add</button>
+                    </div>
+                </div>
+                <p id="message1"></p>
+            </div>
+            <div>
+            	<!-- uncomment to put your images -->
+              <img src="images/pizza.jpg">
+              <div class="prod">
+                    <h3 class="tit" id="brand1">pizza</h3>
+                    <h4 id="price1">9</h4>
+
+
+                                  </div>
+                <div class="inputs">
+                    <input type="number" id="quantity1" name="quantity1" min="1" max="99" value="1">
+                    <select id="size1" name="size1" onclick="deleteE('message1')">
+                        <option value="Medium">M</option>
+                        <option value="Large">L</option>
+                    </select>
+                    <div>
+                        <button class="addTo" onclick="add(1)">Add</button>
+                    </div>
+                </div>
+                <p id="message1"></p>
+            </div>
+            </div>
+        <div class="cart">
+            <h3 class="tit">My articles</h3>
+            <!-- list of the articles in the cart -->
+            <ul id="items">
+            </ul> 
+            <h3 id="total" style="text-align: right;">Total: 0 $</h3>
+        </div>
+    </div>
+    <script>
+        var total = 0;
+        var i = 1;
+        var message = "Please select a size";
+        var itemCost = [];
+        function add(n){
+            sizeId = "size" + n;            
+            messageId = "message" + n;
+            size = document.getElementById(sizeId).value;
+            if (size==="size"){
+                document.getElementById(messageId).innerHTML = message;
+                return 0;
+            }
+            brand = "brand" + n;
+            priceId = "price" + n;
+            quantityId = "quantity" + n;
+            name = document.getElementById(brand).innerHTML;
+            price = document.getElementById(priceId).innerHTML;
+            quantity = document.getElementById(quantityId).value;
+            var node = document.createElement("LI");
+            item = "item"+i;
+            node.setAttribute("id", item)
+            itemCost[i-1] = Number(price) * Number(quantity);           
+            i += 1;
+            var textnode = document.createTextNode(name+" "+quantity+" x "+price+" $, size: "+ size);
+            node.appendChild(textnode);
+            document.getElementById("items").appendChild(node);
+
+            total += Number(price) * Number(quantity);
+            document.getElementById("total").innerHTML = "Total: " + total.toFixed(2) + " $";
+            document.getElementById(item).innerHTML += '<button onclick="deleItem('+"'"+item+"'"+')">x</button>';
+        }
+         function deleteE(eId) {
+            document.getElementById(eId).innerHTML = ' ';
+        }
+        function deleItem(eId){
+            document.getElementById(eId).remove();            
+            n = Number(eId.slice(-1)) - 1;
+            total -= itemCost[n];
+            document.getElementById("total").innerHTML = "Total: " + total.toFixed(2) + " $"; 
+        }
+    </script>
+</body>
+</html>
